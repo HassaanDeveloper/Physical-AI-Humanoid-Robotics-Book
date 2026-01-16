@@ -1,55 +1,56 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report:
+Version change: N/A (initial version) → 1.0.0
+List of modified principles: N/A (new constitution)
+Added sections: All sections (new constitution)
+Removed sections: N/A
+Templates requiring updates: N/A (initial creation)
+Follow-up TODOs: [RATIFICATION_DATE] needs to be set to actual ratification date
+-->
+
+# Spec-Driven AI Book with Embedded RAG Chatbot Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Spec-First Development
+All implementation must follow a specification; no implementation without prior specification. This ensures clear requirements, testable outcomes, and traceability between business intent and technical execution.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Grounded Responses
+All responses from the RAG chatbot must be grounded in the book content with no hallucinations. Responses must cite specific book sections and only use information explicitly present in the source material.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Traceability
+Complete traceability must be maintained between specifications, book content, and code implementations. Every feature, function, and component must be traceable to its originating requirement or specification.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Modular and Reproducible Architecture
+Architecture must be modular with clearly defined interfaces and reproducible across environments. Components should be independently deployable and testable with consistent behavior across all environments.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Production-Grade Quality
+All code and content must meet production-grade standards including proper error handling, performance considerations, security best practices, and comprehensive testing.
 
-### [PRINCIPLE_6_NAME]
+### VI. Book Content Standards
+Book content must adhere to technical accuracy with runnable code examples, clear structure and metadata, and consistent style for software engineers and CS students. All factual claims must be cited, and code must be runnable or explicitly marked as pseudocode.
 
+## Technology Stack Requirements
 
-[PRINCIPLE__DESCRIPTION]
+The project must utilize the following technology stack:
+- Book creation: Claude Code + Spec-Kit Plus
+- Framework: Docusaurus for publishing on GitHub Pages
+- RAG Chatbot: OpenAI Agents / ChatKit SDKs, FastAPI, Neon Serverless Postgres, Qdrant Cloud (Free Tier)
+- Audience: Software engineers and CS students
+- RAG Modes: Full-book retrieval and User-selected text retrieval
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Development Workflow
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+All development must follow the Spec-Driven Development (SDD) workflow:
+- Specifications must be created and approved before implementation
+- Tasks must be derived from specifications and be testable
+- Implementation must strictly follow the approved tasks
+- All changes must maintain traceability back to original specifications
+- Code reviews must verify compliance with all constitution principles
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution governs all development activities for the Spec-Driven AI Book with Embedded RAG Chatbot project. All implementation, testing, documentation, and deployment activities must comply with these principles. Any deviation from these principles requires explicit amendment to this constitution with proper approval and documentation.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+All pull requests and code reviews must verify compliance with these principles. All team members are responsible for maintaining these standards and raising concerns when they observe potential violations.
+
+**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE) | **Last Amended**: 2026-01-08

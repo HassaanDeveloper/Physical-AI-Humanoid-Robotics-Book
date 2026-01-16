@@ -1,0 +1,110 @@
+# Isaac Sim Synthetic Data Generation Configuration
+# Configuration file for educational synthetic data generation examples
+
+synthetic_data_generator:
+  # General settings
+  output_directory: "./synthetic_data_output"
+  sequence_name: "educational_humanoid_scene"
+  frame_count: 100
+  frame_step: 1
+
+  # Rendering settings
+  rendering:
+    resolution:
+      width: 640
+      height: 480
+    anti_aliasing: 2
+    max_bounces: 8
+    max_specular_transmission_bounces: 8
+    max_volume_bounces: 4
+
+  # Camera settings
+  camera:
+    fov_range: [30, 60]  # degrees
+    position_variance: 0.5  # meters
+    target_variance: 0.2   # meters
+
+  # Data types to generate
+  data_types:
+    rgb: true
+    depth_linear: true
+    depth_linear_in_mm: true
+    semantic_segmentation: true
+    instance_segmentation: true
+    bbox_2d_tight: true
+    bbox_2d_loose: true
+    bbox_3d: true
+    pose: true
+    normal: true
+    motion_vector: true
+
+  # Domain randomization settings
+  domain_randomization:
+    enabled: true
+    appearance:
+      textures: true
+      colors: true
+      materials: true
+      lighting: true
+    geometry:
+      positions: true
+      rotations: true
+      scales: true
+    dynamics:
+      masses: true
+      friction: true
+      restitution: true
+
+  # Randomization ranges
+  randomization_ranges:
+    lighting:
+      intensity_range: [100, 2000]
+      color_temperature_range: [4000, 8000]
+    materials:
+      roughness_range: [0.1, 0.9]
+      metallic_range: [0.0, 1.0]
+      specular_range: [0.0, 1.0]
+    objects:
+      position_jitter: 0.5  # meters
+      rotation_jitter: 15.0  # degrees
+      scale_jitter: 0.2      # percentage
+
+  # Annotation settings
+  annotations:
+    class_mapping:
+      humanoid: 1
+      cube: 2
+      sphere: 3
+      cylinder: 4
+      ground: 5
+      background: 0
+    instance_separation: true
+    occlusion_handling: true
+
+  # Output formats
+  output_formats:
+    rgb:
+      format: "png"
+      compression: 1  # 0-100, 1 = maximum compression
+    depth:
+      format: "tiff"
+      bit_depth: 16
+    segmentation:
+      format: "png"
+      bit_depth: 8
+    annotations:
+      format: "json"  # COCO format
+      include_masks: true
+
+  # Performance settings
+  performance:
+    batch_size: 4
+    memory_budget: 8192  # MB
+    render_timeout: 30   # seconds
+    retry_attempts: 3
+
+  # Validation settings
+  validation:
+    quality_threshold: 0.95
+    completeness_check: true
+    annotation_accuracy: true

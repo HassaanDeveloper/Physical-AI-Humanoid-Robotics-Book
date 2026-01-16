@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch --all --prune)",
+      "Bash(mkdir -p specs/1-ros2-module)",
+      "Bash(.specify/scripts/powershell/create-new-feature.ps1 -Json \"Module 2 – The Digital Twin \\(Gazebo & Unity\\)\n\nPurpose:\nAuthor Module 2 of \"\"Physical AI & Humanoid Robotics,\"\" focusing on physics-based simulation and digital twin environments for humanoid robots.\n\nTarget Audience:\nCS/AI students familiar with ROS 2 fundamentals.\n\nLearning Outcomes:\n- Understand digital twins in robotics\n- Simulate physics, gravity, and collisions in Gazebo\n- Build interactive environments in Unity\n- Simulate robotic sensors \\(LiDAR, depth cameras, IMU\\)\n\nChapters \\(Docusaurus\\):\n1. Digital Twins and Simulation Fundamentals  \n2. Physics Simulation with Gazebo  \n3. Environment & Interaction in Unity  \n4. Sensor Simulation for Humanoids\" -Number 2 -ShortName \"digital-twin\")"
+    ]
+  }
+}

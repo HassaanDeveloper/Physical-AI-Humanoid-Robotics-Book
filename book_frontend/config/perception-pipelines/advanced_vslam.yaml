@@ -1,0 +1,201 @@
+# Advanced VSLAM Configuration
+# This configuration provides an optimized VSLAM pipeline for indoor environments
+# with loop closure detection and GPU acceleration
+
+# VSLAM Configuration
+vslam:
+  name: "advanced_vslam"
+  description: "Advanced VSLAM for indoor environments with loop closure"
+  version: "2.1.0"
+
+  # General Settings
+  enabled: true
+  debug: false
+  visualize: true
+  save_debug_images: false
+  debug_image_dir: "/tmp/vslam_debug"
+
+  # Performance Settings
+  performance:
+    max_fps: 30
+    use_gpu: true
+    gpu_device_id: 0
+    num_worker_threads: 4
+    enable_tensor_cores: true
+    enable_fp16: true
+
+  # Camera Configuration
+  camera:
+    model: "pinhole"
+
+    # Intrinsic parameters (calibrated for typical RGB camera)
+    fx: 554.254691
+    fy: 554.254691
+    cx: 320.5
+    cy: 240.5
+
+    # Image resolution
+    width: 640
+    height: 480
+
+    # Distortion model and coefficients
+    distortion_model: "plumb_bob"
+    distortion_coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+    # Depth camera parameters (if using RGB-D)
+    depth_scale: 1000.0
+    min_depth: 0.3
+    max_depth: 5.0
+
+  # Feature Detection and Matching
+  features:
+    detector_type: "ORB"
+
+    # ORB-specific parameters (optimized for indoor)
+    orb:
+      n_features: 1500
+      scale_factor: 1.2
+      n_levels: 8
+      ini_fast_threshold: 20
+      min_fast_threshold: 7
+
+    # Feature matching parameters
+    matching:
+      matcher_type: "BruteForce"
+      ratio_test: 0.7
+      cross_check: true
+      max_distance: 50.0
+
+  # Mapping Parameters
+  mapping:
+    enable_loop_closure: true
+
+    # Loop closure parameters
+    loop_closure:
+      min_inliers: 20
+      ransac_iterations: 200
+      reprojection_error: 3.0
+      inlier_ratio: 0.3
+
+    # Keyframe selection
+    keyframes:
+      min_distance: 0.1
+      min_rotation: 15.0
+      max_keyframes: 1000
+      culling_strategy: "distance"
+
+  # Optimization Parameters
+  optimization:
+    enable_global_ba: true
+
+    # Local bundle adjustment
+    local_ba:
+      window_size: 10
+      max_iterations: 20
+      convergence_threshold: 1e-5
+
+    # Global bundle adjustment
+    global_ba:
+      interval: 20
+      max_iterations: 50
+      robust_cost: true
+
+  # Tracking Parameters
+  tracking:
+    motion_model: "constant_velocity"
+    min_features: 50
+    max_reprojection_error: 5.0
+    use_imu: false
+
+  # Coordinate Frames
+  frames:
+    map_frame: "map"
+    odom_frame: "odom"
+    base_frame: "base_link"
+    camera_frame: "camera_link"
+
+  # Output Configuration
+  output:
+    publish_tf: true
+    tf_rate: 100
+    publish_odom: true
+    publish_map: true
+    map_density: 0.5
+    publish_debug: false
+
+  # Advanced Parameters
+  advanced:
+    use_semantic_segmentation: false
+    filter_dynamic_objects: true
+    dynamic_threshold: 0.1
+    use_dnn_features: false
+
+  # Performance Tuning
+  performance_tuning:
+    memory:
+      max_cache_size: 1024
+      enable_memory_pooling: true
+      pool_size: 512
+
+    threading:
+      enable_parallel_tracking: true
+      enable_parallel_mapping: true
+      thread_priority: "high"
+
+    gpu:
+      enable_tensor_cores: true
+      enable_fp16: true
+      max_gpu_memory: 2048
+
+  # Environment-Specific Parameters
+  environment:
+    type: "indoor"
+    lighting: "normal"
+    complexity: "medium"
+
+    adaptive:
+      enable: true
+      update_interval: 10
+      performance_target: 0.8
+
+# ROS 2 Integration
+ros2:
+  node_name: "advanced_vslam"
+  namespace: "vslam"
+
+  # Quality of Service
+  qos:
+    reliability: "reliable"
+    durability: "volatile"
+    history_depth: 20
+
+  # Parameters
+  parameters:
+    use_intra_process_comm: true
+    enable_statistics: true
+
+# Health Monitoring
+health:
+  check_interval: 1.0
+  tracking_success_threshold: 0.7
+  reprojection_error_threshold: 5.0
+  processing_time_threshold: 0.1
+
+# Safety Parameters
+safety:
+  max_tracking_error: 1.0
+  max_rotation_error: 30.0
+  auto_reset: true
+  reset_cooldown: 5.0
+
+# Debug and Logging
+logging:
+  level: "info"
+  file: "/tmp/vslam.log"
+  max_size: 100
+  max_files: 5
+
+# Environment Variables
+environment:
+  CUDA_VISIBLE_DEVICES: "0"
+  NITROS_LOG_LEVEL: "info"

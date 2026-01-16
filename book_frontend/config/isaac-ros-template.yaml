@@ -1,0 +1,127 @@
+# Isaac ROS Configuration Template
+# Use this template as a starting point for Isaac ROS pipeline configurations
+
+isaac_ros_nodes:
+  # Isaac ROS perception pipeline configuration
+
+  apriltag:
+    # AprilTag detection node
+    node_name: "apriltag"
+    input_topic: "/camera/rgb/image_rect_color"
+    output_topic: "/apriltag_detections"
+    family: "36h11"
+    max_tags: 128
+    tag_size: 0.1524  # 6 inches in meters
+    quad_decimate: 2.0
+    quad_sigma: 0.0
+    refine_edges: 1
+    decode_sharpening: 0.25
+    max_hamming: 1
+
+  stereo_rectification:
+    # Stereo rectification node
+    node_name: "stereo_rectification"
+    left_image_topic: "/camera/left/image_raw"
+    right_image_topic: "/camera/right/image_raw"
+    left_camera_info_topic: "/camera/left/camera_info"
+    right_camera_info_topic: "/camera/right/camera_info"
+    left_rectified_topic: "/camera/left/image_rect"
+    right_rectified_topic: "/camera/right/image_rect"
+
+  stereo_disparity:
+    # Stereo disparity node
+    node_name: "stereo_disparity"
+    left_topic: "/camera/left/image_rect"
+    right_topic: "/camera/right/image_rect"
+    disparity_topic: "/stereo/disparity"
+    min_disparity: 0.0
+    max_disparity: 64.0
+    num_disparities: 64
+    block_size: 15
+
+  point_cloud:
+    # Point cloud generation node
+    node_name: "point_cloud"
+    disparity_topic: "/stereo/disparity"
+    left_camera_info_topic: "/camera/left/camera_info"
+    right_camera_info_topic: "/camera/right/camera_info"
+    pointcloud_topic: "/points2"
+
+  visual_slam:
+    # Visual SLAM node
+    node_name: "visual_slam"
+    input_topic: "/camera/rgb/image_rect_color"
+    camera_info_topic: "/camera/rgb/camera_info"
+    depth_image_topic: "/camera/depth/image_rect_raw"
+    pose_topic: "/visual_slam/pose"
+    map_topic: "/visual_slam/map"
+    enable_occupancy_grid: true
+    enable_localization: false
+    enable_loop_closure: true
+    enable_mapping: true
+    enable_pointcloud_fusion: true
+
+  image_pipeline:
+    # Image processing pipeline
+    rectify_color:
+      input_topic: "/camera/rgb/image_raw"
+      output_topic: "/camera/rgb/image_rect_color"
+      camera_info_topic: "/camera/rgb/camera_info"
+
+    rectify_depth:
+      input_topic: "/camera/depth/image_raw"
+      output_topic: "/camera/depth/image_rect_raw"
+      camera_info_topic: "/camera/depth/camera_info"
+
+ros2_parameters:
+  # ROS 2 specific parameters
+  use_sim_time: true
+  qos_overrides:
+    /parameter_events:
+      publisher:
+        history: keep_last
+        depth: 1000
+        reliability: reliable
+        durability: volatile
+
+  clock:
+    use_sim_time: true
+
+performance:
+  # Performance optimization settings
+  cpu_affinity: 0
+  gpu_id: 0
+  max_work_queue_size: 10
+  max_work_queue_memory: 100000000  # 100MB
+
+robot_config:
+  # Robot-specific configurations
+  robot_description: "humanoid_description"
+  tf_prefix: ""
+  base_frame: "base_link"
+  odom_frame: "odom"
+  map_frame: "map"
+
+sensors:
+  # Sensor configurations
+  camera:
+    frame_id: "camera_link"
+    width: 640
+    height: 480
+    fps: 30
+    distortion_model: "rational_polynomial"
+
+  imu:
+    frame_id: "imu_link"
+    linear_acceleration_noise_density: 0.017
+    angular_velocity_noise_density: 0.0016
+    linear_acceleration_random_walk: 0.0004
+    angular_velocity_random_walk: 0.00007
+
+  lidar:
+    frame_id: "lidar_link"
+    range_min: 0.1
+    range_max: 25.0
+    resolution: 0.01
+    update_rate: 10.0
+    field_of_view: 360.0

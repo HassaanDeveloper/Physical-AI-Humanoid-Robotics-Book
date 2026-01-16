@@ -1,0 +1,144 @@
+.assessmentContainer {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.assessmentHeader {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #4285f4;
+}
+
+.assessmentTitle {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4285f4;
+}
+
+.questionsContainer {
+  margin-bottom: 1.5rem;
+}
+
+.questionContainer {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+.questionText {
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.answersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.answerOption {
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.answerOption:hover {
+  background-color: #f5faff;
+  border-color: #bbdefb;
+}
+
+.selectedAnswer {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.correctAnswer {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+}
+
+.incorrectAnswer {
+  background-color: #ffebee;
+  border-color: #f44336;
+}
+
+.answerLetter {
+  font-weight: bold;
+  min-width: 20px;
+}
+
+.answerText {
+  flex-grow: 1;
+}
+
+.answerIndicator {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.explanation {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f0f8ff;
+  border-left: 3px solid #2196f3;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.controlsContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.submitButton, .resetButton {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover, .resetButton:hover {
+  background-color: #3367d6;
+}
+
+.resetButton {
+  background-color: #5f6368;
+}
+
+.resetButton:hover {
+  background-color: #3c4043;
+}
+
+.resultsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+}
+
+.resultsSummary {
+  font-weight: bold;
+  color: #1a73e8;
+}

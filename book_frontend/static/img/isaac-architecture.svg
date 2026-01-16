@@ -1,0 +1,61 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .component { fill: #4a90e2; stroke: #2c5aa0; stroke-width: 2; rx: 10; ry: 10; }
+    .label { fill: white; font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; }
+    .connection { stroke: #666; stroke-width: 2; marker-end: url(#arrowhead); }
+    .title { fill: #2c5aa0; font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; text-anchor: middle; }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="40" class="title">NVIDIA Isaac Platform Architecture</text>
+
+  <!-- Isaac Sim -->
+  <rect x="50" y="100" width="200" height="80" class="component"/>
+  <text x="150" y="140" class="label">Isaac Sim</text>
+  <text x="150" y="160" class="label" font-size="12">(Simulation)</text>
+
+  <!-- Isaac ROS -->
+  <rect x="300" y="100" width="200" height="80" class="component"/>
+  <text x="400" y="140" class="label">Isaac ROS</text>
+  <text x="400" y="160" class="label" font-size="12">(Perception &amp; Inference)</text>
+
+  <!-- Isaac Apps -->
+  <rect x="550" y="100" width="200" height="80" class="component"/>
+  <text x="650" y="140" class="label">Isaac Apps</text>
+  <text x="650" y="160" class="label" font-size="12">(Reference Apps)</text>
+
+  <!-- Isaac SDK -->
+  <rect x="150" y="220" width="200" height="80" class="component"/>
+  <text x="250" y="260" class="label">Isaac SDK</text>
+  <text x="250" y="280" class="label" font-size="12">(Development Tools)</text>
+
+  <!-- Jetson Platform -->
+  <rect x="450" y="220" width="200" height="80" class="component"/>
+  <text x="550" y="260" class="label">Jetson Platform</text>
+  <text x="550" y="280" class="label" font-size="12">(Hardware)</text>
+
+  <!-- Robot -->
+  <rect x="300" y="350" width="200" height="80" class="component"/>
+  <text x="400" y="390" class="label">Robot</text>
+  <text x="400" y="410" class="label" font-size="12">(Physical System)</text>
+
+  <!-- Connections -->
+  <line x1="150" y1="180" x2="250" y2="220" class="connection"/>
+  <line x1="500" y1="180" x2="550" y2="220" class="connection"/>
+  <line x1="300" y1="300" x2="400" y2="350" class="connection"/>
+  <line x1="500" y1="300" x2="400" y2="350" class="connection"/>
+  <line x1="250" y1="300" x2="400" y2="350" class="connection"/>
+
+  <!-- Labels for connections -->
+  <text x="200" y="200" font-family="Arial" font-size="12" fill="#333">Simulation</text>
+  <text x="525" y="200" font-family="Arial" font-size="12" fill="#333">Perception</text>
+  <text x="450" y="325" font-family="Arial" font-size="12" fill="#333">Navigation</text>
+  <text x="325" y="325" font-family="Arial" font-size="12" fill="#333">Control</text>
+  <text x="450" y="250" font-family="Arial" font-size="12" fill="#333">Development</text>
+</svg>

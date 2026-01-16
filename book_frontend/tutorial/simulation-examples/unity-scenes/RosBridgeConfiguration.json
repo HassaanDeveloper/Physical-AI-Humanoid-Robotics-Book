@@ -1,0 +1,68 @@
+{
+  "rosBridgeSettings": {
+    "serverAddress": "ws://localhost:9090",
+    "connectionTimeout": 5000,
+    "reconnectionAttempts": 3,
+    "reconnectionDelay": 1000,
+    "topics": [
+      {
+        "name": "/joint_states",
+        "type": "sensor_msgs/JointState",
+        "publishRate": 10,
+        "enabled": true
+      },
+      {
+        "name": "/cmd_vel",
+        "type": "geometry_msgs/Twist",
+        "publishRate": 10,
+        "enabled": true
+      },
+      {
+        "name": "/tf",
+        "type": "tf2_msgs/TFMessage",
+        "publishRate": 30,
+        "enabled": true
+      },
+      {
+        "name": "/scan",
+        "type": "sensor_msgs/LaserScan",
+        "publishRate": 10,
+        "enabled": true
+      },
+      {
+        "name": "/camera/rgb/image_raw",
+        "type": "sensor_msgs/Image",
+        "publishRate": 5,
+        "enabled": false
+      },
+      {
+        "name": "/imu/data",
+        "type": "sensor_msgs/Imu",
+        "publishRate": 50,
+        "enabled": true
+      }
+    ],
+    "services": [
+      {
+        "name": "/reset_positions",
+        "type": "std_srvs/Empty",
+        "enabled": true
+      }
+    ]
+  },
+  "robotConfiguration": {
+    "modelName": "humanoid_robot",
+    "jointMapping": {
+      "left_arm_joint": "LeftArmJoint",
+      "right_arm_joint": "RightArmJoint",
+      "left_leg_joint": "LeftLegJoint",
+      "right_leg_joint": "RightLegJoint",
+      "head_joint": "HeadJoint"
+    },
+    "sensorMapping": {
+      "lidar": "LidarSensor",
+      "camera": "CameraSensor",
+      "imu": "IMUSensor"
+    }
+  }
+}

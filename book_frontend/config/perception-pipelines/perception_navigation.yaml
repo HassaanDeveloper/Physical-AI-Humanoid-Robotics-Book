@@ -1,0 +1,233 @@
+# Perception-Navigation Integration Configuration
+# This configuration bridges perception data with navigation systems
+# for obstacle avoidance and path planning
+
+# Integration Configuration
+integration:
+  name: "perception_navigation_bridge"
+  description: "Bridge between perception and navigation systems"
+  version: "1.2.0"
+
+  # Bridge Settings
+  bridge:
+    enabled: true
+    update_rate: 10.0  # Hz
+    max_queue_size: 50
+
+  # Input Configuration
+  input:
+    perception:
+      detections_topic: "/perception/detections"
+      map_points_topic: "/perception/map_points"
+      vslam_pose_topic: "/perception/vslam/pose"
+
+    navigation:
+      global_costmap_topic: "/global_costmap/costmap"
+      local_costmap_topic: "/local_costmap/costmap"
+      robot_pose_topic: "/odom"
+
+  # Costmap Integration
+  costmap:
+    global:
+      enabled: true
+      update_rate: 5.0  # Hz
+      inflation_radius: 0.5  # meters
+      max_obstacle_height: 2.0  # meters
+      min_obstacle_height: 0.1  # meters
+
+    local:
+      enabled: true
+      update_rate: 10.0  # Hz
+      inflation_radius: 0.3  # meters
+      max_obstacle_height: 1.5  # meters
+      min_obstacle_height: 0.05  # meters
+
+  # Obstacle Processing
+  obstacles:
+    detection_threshold: 0.6  # confidence threshold
+    min_size: 0.1  # meters (minimum obstacle size)
+    max_size: 5.0  # meters (maximum obstacle size)
+
+    # Dynamic obstacle filtering
+    dynamic_filter:
+      enabled: true
+      velocity_threshold: 0.5  # m/s
+      acceleration_threshold: 1.0  # m/s²
+      history_window: 5  # frames
+
+  # TF Configuration
+  tf:
+    base_frame: "base_link"
+    map_frame: "map"
+    odom_frame: "odom"
+    camera_frame: "camera_link"
+
+    transform_timeout: 0.1  # seconds
+    buffer_size: 10.0  # seconds
+
+  # Visualization
+  visualization:
+    enabled: true
+    marker_topic: "/visualization_marker_array"
+
+    colors:
+      static_obstacle: [1.0, 0.0, 0.0, 0.8]  # RGBA
+      dynamic_obstacle: [0.0, 1.0, 1.0, 0.8]
+      unknown_space: [0.5, 0.5, 0.5, 0.3]
+
+    sizes:
+      static_obstacle: 0.1
+      dynamic_obstacle: 0.15
+      inflation_radius: 0.05
+
+  # Performance Optimization
+  performance:
+    use_gpu: false  # CPU-based for navigation integration
+    max_processing_time: 0.05  # seconds
+    batch_size: 10
+
+    memory:
+      max_cache_size: 256  # MB
+      enable_memory_pooling: false
+
+  # Safety Parameters
+  safety:
+    max_obstacle_distance: 10.0  # meters
+    emergency_stop_distance: 0.5  # meters
+    collision_avoidance_enabled: true
+
+    # Safety overrides
+    overrides:
+      max_velocity_reduction: 0.5  # reduce to 50% of max
+      emergency_stop_velocity: 0.1  # m/s
+
+  # Debug and Logging
+  debug:
+    enabled: false
+    log_performance: true
+    performance_interval: 20  # frames
+
+    logging:
+      level: "info"
+      log_to_file: true
+      log_file_path: "/tmp/perception_navigation.log"
+      max_size: 50  # MB
+      max_files: 3
+
+# ROS 2 Integration
+ros2:
+  node_name: "perception_navigation_bridge"
+  namespace: "navigation"
+
+  # Quality of Service
+  qos:
+    reliability: "reliable"
+    durability: "volatile"
+    history_depth: 10
+
+  # Parameters
+  parameters:
+    use_intra_process_comm: true
+    enable_statistics: true
+
+# Environment Variables
+environment:
+  # No special GPU requirements for navigation bridge
+  NITROS_LOG_LEVEL: "info"
+
+# Health Monitoring
+health:
+  check_interval: 0.5  # seconds
+  max_latency_warning: 0.05  # seconds
+  min_update_rate_warning: 8.0  # Hz
+  memory_limit: 512  # MB
+
+# Configuration Profiles
+profiles:
+  # Indoor profile (default)
+  indoor:
+    costmap_inflation: 0.4
+    obstacle_detection_range: 8.0
+    dynamic_filter_sensitivity: 0.7
+
+  # Outdoor profile
+  outdoor:
+    costmap_inflation: 0.6
+    obstacle_detection_range: 15.0
+    dynamic_filter_sensitivity: 0.5
+
+  # High density profile
+  high_density:
+    costmap_inflation: 0.3
+    obstacle_detection_range: 5.0
+    dynamic_filter_sensitivity: 0.9
+
+# Adaptive Parameters
+adaptive:
+  enabled: true
+  update_interval: 5.0  # seconds
+
+  # Performance-based adaptation
+  performance:
+    target_fps: 15.0
+    min_fps_threshold: 10.0
+
+    # Adaptation strategies
+    strategies:
+      - name: "reduce_resolution"
+        trigger: "low_fps"
+        action: "reduce_input_resolution"
+        params: {scale: 0.8}
+
+      - name: "increase_batch_size"
+        trigger: "high_fps"
+        action: "increase_batch_size"
+        params: {increment: 5}
+
+# Validation Rules
+validation:
+  # Input validation
+  input:
+    min_detection_confidence: 0.3
+    max_detection_size: 10.0  # meters
+    min_update_rate: 5.0  # Hz
+
+  # Output validation
+  output:
+    max_costmap_update_time: 0.1  # seconds
+    min_costmap_occupancy: 0.1
+    max_costmap_occupancy: 0.9
+
+# Error Handling
+errors:
+  handling:
+    timeout:
+      action: "warn_and_continue"
+      max_retries: 3
+      retry_delay: 1.0
+
+    invalid_data:
+      action: "skip_frame"
+      max_skips: 5
+      recovery: "reset_buffer"
+
+    resource_limit:
+      action: "reduce_quality"
+      recovery: "restart_after_cooldown"
+      cooldown: 10.0
+
+# Metrics Collection
+metrics:
+  enabled: true
+  collection_interval: 1.0  # seconds
+
+  topics:
+    - "/perception_navigation/metrics"
+    - "/statistics"
+
+  recorded_metrics:
+    - "processing_time"
+    - "obstacle_count"
+    - "costmap_update_time"
+    - "memory_usage"
+    - "cpu_usage"

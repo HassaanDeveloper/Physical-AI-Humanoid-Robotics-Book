@@ -1,0 +1,321 @@
+/* You can override the default Docusaurus styles here */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Docusaurus styles here. */
+:root {
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1a41be;
+  --ifm-color-primary-darkest: #15349a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #3b82f6;
+  --ifm-color-primary-dark: #2563eb;
+  --ifm-color-primary-darker: #1d4ed8;
+  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #dbeafe;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Module header styling for tagline */
+.module-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--ifm-color-emphasis-100);
+  border-left: 4px solid var(--ifm-color-primary);
+  border-radius: 0 4px 4px 0;
+}
+
+.module-tag {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ifm-color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Improved typography and spacing */
+.markdown h1, .markdown h2, .markdown h3 {
+  font-weight: 600;
+}
+
+/* Enhanced button styles */
+.button--primary {
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Foundational CSS for UI Enhancement - Phase 2 */
+:root {
+  /* VIP Color Palette - Modern Technical Book Theme */
+  --vip-primary: #2563eb;
+  --vip-primary-light: #3b82f6;
+  --vip-primary-dark: #1d4ed8;
+  --vip-secondary: #1e40af;
+  --vip-accent: #8b5cf6;
+  --vip-background: #f8fafc;
+  --vip-card-bg: #ffffff;
+  --vip-text-primary: #1e293b;
+  --vip-text-secondary: #64748b;
+  --vip-border: #e2e8f0;
+  --vip-hover: #f1f5f9;
+  --vip-gradient-start: rgba(37, 99, 235, 0.9);
+  --vip-gradient-end: rgba(59, 130, 246, 0.7);
+}
+
+/* Responsive Breakpoints */
+:root {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes topBorderSlide {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--vip-primary);
+}
+
+.section-description {
+  text-align: center;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--vip-text-secondary);
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced focus styles for accessibility */
+:focus-visible {
+  outline: 3px solid var(--vip-primary);
+  outline-offset: 2px;
+}
+
+/* User Story 3: Visual Design Enhancements - Professional Polish */
+
+/* Professional Typography System */
+:root {
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  color: var(--vip-text-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: var(--vip-text-primary);
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+/* Consistent Spacing System */
+:root {
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-xxl: 4rem;
+}
+
+/* Subtle Hover Animations for Interactive Elements */
+.button, .button--primary, .button--secondary {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button:hover, .button--primary:hover, .button--secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Card Hover Effects */
+[class*="card"] {
+  transition: all 0.3s ease;
+}
+
+[class*="card"]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth Transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Browser-Specific Fixes */
+/* Safari smooth scrolling fix */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Firefox button alignment */
+@-moz-document url-prefix() {
+  .button {
+    padding-top: 2px;
+  }
+}
+
+/* Responsive Typography Enhancements */
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+}
+
+/* Print Styles */
+@media print {
+  .hero {
+    height: auto;
+    min-height: auto;
+    background: white !important;
+  }
+
+  .heroTitle, .heroTagline, .heroDescription {
+    color: black !important;
+  }
+
+  .modulesGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vip-background: #0f172a;
+    --vip-card-bg: #1e293b;
+    --vip-text-primary: #f1f5f9;
+    --vip-text-secondary: #cbd5e1;
+    --vip-border: #334155;
+    --vip-hover: #334155;
+  }
+
+  .heroOverlay {
+    background: linear-gradient(135deg, var(--vip-primary), var(--vip-primary-dark));
+  }
+
+  .moduleCard {
+    background: var(--vip-card-bg);
+    border-color: var(--vip-border);
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

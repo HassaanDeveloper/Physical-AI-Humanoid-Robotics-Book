@@ -1,0 +1,168 @@
+#usda 1.0
+
+def Xform "World"
+{
+    def Xform "GroundPlane"
+    {
+        def Cylinder "plane"
+        {
+            double radius = 10.0
+            int axis = 1
+            double height = 0.1
+
+            prepend primvars:displayColor.timeSamples = {
+                0: [(0.5, 0.5, 0.5)]
+            }
+        }
+    }
+
+    def Xform "HumanoidRobot"
+    {
+        # Robot root
+        def Xform "base_link"
+        {
+            # Torso
+            def Capsule "torso"
+            {
+                double radius = 0.15
+                double height = 0.6
+
+                prepend primvars:displayColor.timeSamples = {
+                    0: [(0.2, 0.6, 0.8)]
+                }
+            }
+
+            # Head
+            def Xform "head"
+            {
+                double3 xformOp:translate = (0, 0.4, 0)
+
+                def Sphere "head_geom"
+                {
+                    double radius = 0.12
+
+                    prepend primvars:displayColor.timeSamples = {
+                        0: [(0.9, 0.9, 0.9)]
+                    }
+                }
+
+                # Camera sensor
+                def Camera "camera"
+                {
+                    double3 xformOp:translate = (0.05, 0.05, 0)
+                    float focalLength = 24
+                    float horizontalAperture = 20.955
+                    float verticalAperture = 15.2908
+                }
+            }
+
+            # Left arm
+            def Xform "left_arm"
+            {
+                double3 xformOp:translate = (0.25, 0.2, 0)
+
+                def Capsule "upper_arm"
+                {
+                    double radius = 0.05
+                    double height = 0.4
+
+                    prepend primvars:displayColor.timeSamples = {
+                        0: [(0.8, 0.2, 0.2)]
+                    }
+                }
+            }
+
+            # Right arm
+            def Xform "right_arm"
+            {
+                double3 xformOp:translate = (-0.25, 0.2, 0)
+
+                def Capsule "upper_arm"
+                {
+                    double radius = 0.05
+                    double height = 0.4
+
+                    prepend primvars:displayColor.timeSamples = {
+                        0: [(0.8, 0.2, 0.2)]
+                    }
+                }
+            }
+
+            # Left leg
+            def Xform "left_leg"
+            {
+                double3 xformOp:translate = (0.1, -0.4, 0)
+
+                def Capsule "upper_leg"
+                {
+                    double radius = 0.07
+                    double height = 0.5
+
+                    prepend primvars:displayColor.timeSamples = {
+                        0: [(0.2, 0.8, 0.2)]
+                    }
+                }
+            }
+
+            # Right leg
+            def Xform "right_leg"
+            {
+                double3 xformOp:translate = (-0.1, -0.4, 0)
+
+                def Capsule "upper_leg"
+                {
+                    double radius = 0.07
+                    double height = 0.5
+
+                    prepend primvars:displayColor.timeSamples = {
+                        0: [(0.2, 0.8, 0.2)]
+                    }
+                }
+            }
+        }
+    }
+
+    # Lighting
+    def DistantLight "KeyLight"
+    {
+        float angle = 0.5
+        float intensity = 1000
+        color3f color = (1.0, 1.0, 1.0)
+        bool visible = 1
+    }
+
+    # Objects for synthetic data generation
+    def Xform "Objects"
+    {
+        def Cube "cube_red"
+        {
+            double3 xformOp:translate = (2.0, 1.0, 0.2)
+            double3 size = (0.4, 0.4, 0.4)
+
+            prepend primvars:displayColor.timeSamples = {
+                0: [(0.9, 0.2, 0.2)]
+            }
+        }
+
+        def Sphere "sphere_blue"
+        {
+            double3 xformOp:translate = (-1.5, -1.0, 0.3)
+            double radius = 0.3
+
+            prepend primvars:displayColor.timeSamples = {
+                0: [(0.2, 0.4, 0.9)]
+            }
+        }
+
+        def Cylinder "cylinder_green"
+        {
+            double3 xformOp:translate = (0.5, -2.0, 0.25)
+            double radius = 0.2
+            double height = 0.5
+
+            prepend primvars:displayColor.timeSamples = {
+                0: [(0.2, 0.8, 0.2)]
+            }
+        }
+    }
+}

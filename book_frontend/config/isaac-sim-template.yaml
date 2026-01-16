@@ -1,0 +1,95 @@
+# Isaac Sim Configuration Template
+# Use this template as a starting point for Isaac Sim configurations
+
+app_launcher:
+  # Application settings
+  experience: /Isaac/Samples/SimpleSample/standalone_physics_simulation.usd
+  headless: false
+  clear_logs_on_launch: true
+  restore_backup_on_exit: true
+
+simulation:
+  # Simulation settings
+  physics_dt: 0.008333  # 1/120 sec
+  render_dt: 0.016667   # 1/60 sec
+  enable_lights: true
+  enable_ground_plane: true
+  enable_fabric: true
+
+  # Physics settings
+  gravity:
+    x: 0.0
+    y: 0.0
+    z: -9.81
+
+  # Renderer settings
+  renderer:
+    resolution:
+      width: 1280
+      height: 720
+    window_title: "Isaac Sim - Educational Environment"
+
+  # USD stage settings
+  stage_units:
+    meters_per_unit: 1.0
+
+isaac_sim_extensions:
+  # Enabled extensions for educational purposes
+  enabled_extensions:
+    - omni.isaac.core_nodes
+    - omni.isaac.range_sensor
+    - omni.isaac.sensor
+    - omni.kit.viewport.window
+    - omni.kit.property
+    - omni.graph.action
+    - omni.graph.execute
+    - omni.graph.val
+    - omni.timeline
+    - omni.kit.quick_layout
+
+camera_settings:
+  # Default camera configuration
+  fov: 55.0
+  near_clip: 0.1
+  far_clip: 1000.0
+  position: [0.0, -5.0, 3.0]
+  target: [0.0, 0.0, 0.0]
+
+lighting_settings:
+  # Default lighting configuration
+  dome_light:
+    intensity: 500.0
+    color: [1.0, 1.0, 1.0]
+    enabled: true
+
+synthetic_data_generation:
+  # Settings for synthetic data generation
+  enabled: false
+  output_dir: "./synthetic_data"
+  image_format: "png"
+  depth_scale: 1000.0
+  semantic_annotations: true
+  instance_annotations: true
+
+robot_config:
+  # Robot-specific settings
+  default_robot_usd_path: "/Isaac/Robots/Humanoid/humanoid_instanceable.usd"
+  robot_start_pose:
+    position: [0.0, 0.0, 1.0]
+    orientation: [0.0, 0.0, 0.0, 1.0]  # w, x, y, z (quaternion)
+
+sensor_config:
+  # Default sensor configurations
+  camera:
+    resolution: [640, 480]
+    fov: 60.0
+    clipping_range: [0.1, 100.0]
+
+  lidar:
+    rotation_frequency: 20.0
+    channels: 16
+    points_per_second: 400000
+    scan_line_resolution: 1000
+    horizontal_fov: 360.0
+    vertical_fov: 30.0
+    enable_semantic_segmentation: true

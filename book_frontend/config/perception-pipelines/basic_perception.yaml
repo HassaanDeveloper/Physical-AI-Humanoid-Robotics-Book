@@ -1,0 +1,124 @@
+# Basic Perception Pipeline Configuration
+# This configuration provides a simple perception pipeline for object detection
+# using a pre-trained YOLOv4-tiny model with GPU acceleration
+
+# Pipeline Configuration
+pipeline:
+  name: "basic_perception"
+  description: "Basic object detection pipeline using YOLOv4-tiny"
+  version: "1.0.0"
+
+  # Performance Settings
+  performance:
+    use_gpu: true
+    gpu_device_id: 0
+    max_fps: 15.0
+    enable_memory_pooling: true
+    pool_size_mb: 512
+
+  # Input Configuration
+  input:
+    image_topic: "/camera/color/image_raw"
+    camera_info_topic: "/camera/color/camera_info"
+    use_sim_time: false
+
+  # Image Processing
+  image_processing:
+    resize:
+      enabled: true
+      width: 640
+      height: 480
+      maintain_aspect_ratio: true
+
+    normalize:
+      enabled: true
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+
+    color_correction:
+      enabled: true
+      gamma: 1.0
+      contrast: 1.0
+      brightness: 0.0
+
+  # Object Detection
+  object_detection:
+    model:
+      type: "yolov4-tiny"
+      path: "/models/yolov4-tiny.onnx"
+      engine_path: "/models/yolov4-tiny.engine"
+      force_engine_update: false
+
+    inference:
+      confidence_threshold: 0.5
+      nms_threshold: 0.4
+      max_detections: 100
+
+    classes:
+      - "person"
+      - "car"
+      - "bicycle"
+      - "dog"
+      - "cat"
+
+  # Output Configuration
+  output:
+    detections_topic: "/perception/detections"
+    debug_image_topic: "/perception/debug_image"
+    enable_visualization: true
+
+  # Visualization
+  visualization:
+    bounding_box:
+      color: [0, 255, 0]
+      thickness: 2
+      show_labels: true
+      show_confidence: true
+
+    text:
+      font_scale: 0.5
+      thickness: 1
+      color: [255, 255, 255]
+
+  # Logging
+  logging:
+    level: "info"
+    log_performance: true
+    performance_interval: 10  # frames
+    log_to_file: false
+    log_file_path: "/tmp/perception.log"
+
+# ROS 2 Specific Configuration
+ros2:
+  node_name: "basic_perception_pipeline"
+  namespace: "perception"
+
+  # Quality of Service
+  qos:
+    reliability: "reliable"
+    durability: "volatile"
+    history_depth: 10
+
+  # Parameters
+  parameters:
+    use_intra_process_comm: true
+    enable_statistics: true
+
+# Environment Variables
+environment:
+  CUDA_VISIBLE_DEVICES: "0"
+  NITROS_LOG_LEVEL: "info"
+
+# Health Monitoring
+health:
+  check_interval: 1.0  # seconds
+  max_latency_warning: 0.1  # seconds
+  min_fps_warning: 10.0
+  gpu_memory_limit: 2048  # MB
+
+# Safety Limits
+safety:
+  max_gpu_memory: 3072  # MB
+  max_cpu_usage: 80.0  # percent
+  auto_restart_on_failure: true
+  restart_delay: 5.0  # seconds

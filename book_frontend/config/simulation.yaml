@@ -1,0 +1,37 @@
+# Simulation Configuration
+
+# Physics Simulation Settings
+gravity: 9.81
+friction_coefficient: 0.5
+bounce_coefficient: 0.1
+collision_detection: true
+
+# Visualization Settings
+render_quality: high
+frame_rate: 60
+real_time_factor: 1.0
+
+# Robot Model Settings
+base_model: humanoid.urdf
+joint_limits_enabled: true
+actuator_damping: 0.1
+
+# Sensor Simulation Settings
+lidar_resolution: 0.5
+camera_fov: 60
+imu_noise_level: low
+
+# Performance Settings
+max_update_rate: 1000
+thread_count: 4
+memory_limit: 2GB
+
+# Environment Settings
+default_world: empty.world
+terrain_complexity: medium
+lighting_quality: high
+
+# Network Settings
+ros_bridge_enabled: true
+communication_protocol: tcp
+port_range_start: 11311
