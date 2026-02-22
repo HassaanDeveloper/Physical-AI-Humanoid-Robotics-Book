@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2"
+  },
+  "dependencies": {
+    "@qdrant/js-client-rest": "^1.16.2",
+    "axios": "^1.13.2",
+    "cheerio": "^1.1.0",
+    "cohere-ai": "^7.20.0",
+    "htmlparser2": "^10.0.0",
+    "marked": "^17.0.1",
+    "xml2js": "^0.6.2"
+  }
+}

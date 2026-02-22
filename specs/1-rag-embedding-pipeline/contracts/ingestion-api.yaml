@@ -1,0 +1,533 @@
+openapi: 3.0.0
+info:
+  title: URL Ingestion & Embedding Pipeline API
+  description: API for ingesting book URLs, generating embeddings, and storing vectors
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local development server
+  - url: https://api.book-hackathon.com/v1
+    description: Production server
+
+paths:
+  /ingestion/pipeline:
+    post:
+      tags:
+        - Ingestion
+      summary: Run complete ingestion pipeline
+      description: Ingest URLs, chunk content, generate embeddings, and store vectors
+      operationId: runIngestionPipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestionRequest'
+      responses:
+        '200':
+          description: Pipeline completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngestionResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ingestion/urls:
+    post:
+      tags:
+        - Ingestion
+      summary: Ingest content from URLs
+      description: Fetch and extract content from provided URLs
+      operationId: ingestUrls
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlIngestionRequest'
+      responses:
+        '200':
+          description: URLs ingested successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlIngestionResponse'
+        '400':
+          description: Invalid URLs or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ingestion/chunks:
+    post:
+      tags:
+        - Ingestion
+      summary: Chunk ingested content
+      description: Split content into chunks for embedding
+      operationId: chunkContent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChunkingRequest'
+      responses:
+        '200':
+          description: Content chunked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChunkingResponse'
+        '400':
+          description: Invalid content or parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /embeddings/generate:
+    post:
+      tags:
+        - Embeddings
+      summary: Generate embeddings for chunks
+      description: Create vector embeddings using Cohere API
+      operationId: generateEmbeddings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingRequest'
+      responses:
+        '200':
+          description: Embeddings generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingResponse'
+        '400':
+          description: Invalid chunks or parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vectors/store:
+    post:
+      tags:
+        - Storage
+      summary: Store vectors in Qdrant
+      description: Store embeddings and metadata in vector database
+      operationId: storeVectors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VectorStorageRequest'
+      responses:
+        '200':
+          description: Vectors stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VectorStorageResponse'
+        '400':
+          description: Invalid vectors or metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Storage error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /search/vectors:
+    post:
+      tags:
+        - Search
+      summary: Search vectors by similarity
+      description: Find similar vectors using semantic search
+      operationId: searchVectors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /stats:
+    get:
+      tags:
+        - Monitoring
+      summary: Get pipeline statistics
+      description: Retrieve processing statistics and metrics
+      operationId: getStatistics
+      responses:
+        '200':
+          description: Pipeline statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsResponse'
+
+components:
+  schemas:
+    IngestionRequest:
+      type: object
+      properties:
+        urls:
+          type: array
+          items:
+            type: string
+          description: List of URLs to ingest
+        chunk_size:
+          type: integer
+          default: 500
+          description: Target chunk size in tokens
+        overlap:
+          type: integer
+          default: 50
+          description: Overlap between chunks in tokens
+      required:
+        - urls
+
+    IngestionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_urls:
+          type: integer
+        created_chunks:
+          type: integer
+        generated_embeddings:
+          type: integer
+        stored_vectors:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    UrlIngestionRequest:
+      type: object
+      properties:
+        urls:
+          type: array
+          items:
+            type: string
+          description: URLs to fetch and extract
+      required:
+        - urls
+
+    UrlIngestionResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngestionResult'
+        timestamp:
+          type: string
+          format: date-time
+
+    IngestionResult:
+      type: object
+      properties:
+        url:
+          type: string
+        content:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PageMetadata'
+        timestamp:
+          type: string
+          format: date-time
+
+    PageMetadata:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        keywords:
+          type: string
+        language:
+          type: string
+
+    ChunkingRequest:
+      type: object
+      properties:
+        content:
+          type: string
+        chunk_size:
+          type: integer
+          default: 500
+        overlap:
+          type: integer
+          default: 50
+      required:
+        - content
+
+    ChunkingResponse:
+      type: object
+      properties:
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentChunk'
+        statistics:
+          $ref: '#/components/schemas/ChunkStatistics'
+
+    ContentChunk:
+      type: object
+      properties:
+        text:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/ChunkMetadata'
+
+    ChunkMetadata:
+      type: object
+      properties:
+        url:
+          type: string
+        title:
+          type: string
+        chunk_index:
+          type: integer
+        chunk_total:
+          type: integer
+        token_count:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+
+    ChunkStatistics:
+      type: object
+      properties:
+        total_chunks:
+          type: integer
+        avg_tokens:
+          type: number
+        min_tokens:
+          type: integer
+        max_tokens:
+          type: integer
+
+    EmbeddingRequest:
+      type: object
+      properties:
+        chunks:
+          type: array
+          items:
+            type: string
+        model:
+          type: string
+          default: "embed-english-v3.0"
+      required:
+        - chunks
+
+    EmbeddingResponse:
+      type: object
+      properties:
+        embeddings:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+        statistics:
+          type: object
+          properties:
+            processed:
+              type: integer
+            failed:
+              type: integer
+            timestamp:
+              type: string
+              format: date-time
+
+    VectorStorageRequest:
+      type: object
+      properties:
+        vectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorRecord'
+        collection:
+          type: string
+          default: "book_content"
+      required:
+        - vectors
+
+    VectorRecord:
+      type: object
+      properties:
+        id:
+          type: string
+        vector:
+          type: array
+          items:
+            type: number
+        text:
+          type: string
+        url:
+          type: string
+        title:
+          type: string
+        chunk_index:
+          type: integer
+        chunk_total:
+          type: integer
+        token_count:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - id
+        - vector
+        - text
+        - url
+
+    VectorStorageResponse:
+      type: object
+      properties:
+        stored:
+          type: integer
+        failed:
+          type: integer
+        collection:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    SearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+        limit:
+          type: integer
+          default: 5
+        filters:
+          type: object
+          additionalProperties: true
+      required:
+        - query
+
+    SearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+        timestamp:
+          type: string
+          format: date-time
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+        score:
+          type: number
+        text:
+          type: string
+        url:
+          type: string
+        title:
+          type: string
+        chunk_index:
+          type: integer
+        chunk_total:
+          type: integer
+        token_count:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+
+    StatisticsResponse:
+      type: object
+      properties:
+        points_count:
+          type: integer
+        embedding_dimension:
+          type: integer
+        chunk_size:
+          type: integer
+        overlap:
+          type: integer
+        batch_size:
+          type: integer
+        rate_limit:
+          type: number
+        last_updated:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: X-API-Key
+      in: header
+
+security:
+  - apiKey: []

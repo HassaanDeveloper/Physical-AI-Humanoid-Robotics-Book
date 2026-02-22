@@ -1,0 +1,216 @@
+/* Chatbot container enhancements */
+.chatbotContainer {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  width: 370px; /* Increased width */
+  height: 550px; /* Increased height */
+  border: none; /* Remove border */
+  border-radius: 15px; /* Softer radius */
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9; /* Light grey background */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Softer shadow */
+  z-index: 1000;
+
+  /* Initial closed state (off-screen, invisible, non-interactive) */
+  opacity: 0;
+  pointer-events: none; /* Disables interaction when closed */
+  transform: translateY(100%); /* Start completely below the screen */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Open state for the chatbot container */
+.chatbotContainerOpen {
+  opacity: 1;
+  pointer-events: auto; /* Enables interaction when open */
+  transform: translateY(0); /* Slides into view */
+}
+
+/* Header for the chatbot */
+.chatbotHeader {
+  background-color: #4a4a4a; /* Dark header */
+  color: white;
+  padding: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Header subtitle */
+.headerSubtitle {
+  font-size: 0.85em; /* Smaller font size */
+  opacity: 0.8; /* Slightly transparent */
+  display: block; /* Ensure it takes its own line */
+  margin-top: 5px;
+}
+
+/* Message container with more padding */
+.messageContainer {
+  flex-grow: 1;
+  padding: 20px 10px; /* Increased padding */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between messages */
+}
+
+/* Individual message styling */
+.message {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  max-width: 85%;
+  word-wrap: break-word;
+}
+
+.messageContent {
+  padding: 10px 15px;
+  border-radius: 20px;
+  line-height: 1.4;
+}
+
+/* Welcome message specific styling */
+.welcomeMessage {
+  align-self: center; /* Center the welcome message */
+  max-width: 90%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.welcomeMessage .messageContent {
+  background-color: #e0f2f7; /* Light blue background */
+  color: #333;
+  text-align: center;
+  font-style: italic;
+  border-radius: 10px;
+}
+
+/* Avatar styling */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin: 0 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* User message styles */
+.user {
+  align-self: flex-end;
+  flex-direction: row-reverse; /* Avatar on the right */
+}
+
+.user .messageContent {
+  background-color: #007bff; /* Vibrant blue */
+  color: white;
+  border-bottom-right-radius: 5px; /* iMessage-like bubble */
+}
+
+.user .avatar {
+  background-color: #0056b3; /* Darker blue for avatar */
+  color: white;
+}
+
+/* Bot message styles */
+.bot {
+  align-self: flex-start;
+}
+
+.bot .messageContent {
+  background-color: #e9e9eb; /* Light grey for bot */
+  color: black;
+  border-bottom-left-radius: 5px; /* iMessage-like bubble */
+}
+
+.bot .avatar {
+  background-color: #d1d1d6; /* Mid-grey for bot avatar */
+  color: #4a4a4a;
+}
+
+/* Input area enhancements */
+.inputContainer {
+  display: flex;
+  padding: 15px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.inputContainer input {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 12px 15px; /* Increased padding */
+  margin-right: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.inputContainer input:focus {
+  outline: none;
+  border-color: #007bff; /* Highlight on focus */
+}
+
+.inputContainer button {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%; /* Circular button */
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.inputContainer button:hover {
+  background-color: #0056b3;
+}
+
+.inputContainer button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+/* Sources styling */
+.sources {
+  margin-top: 10px;
+  font-size: 0.85em;
+}
+
+.sources summary {
+  cursor: pointer;
+  color: #555;
+  font-weight: bold;
+}
+
+.sources ul {
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.sources li a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.sources li a:hover {
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.error {
+  color: #d9534f;
+  background-color: #f2dede;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+}

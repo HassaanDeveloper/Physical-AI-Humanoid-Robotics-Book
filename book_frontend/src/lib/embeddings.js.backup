@@ -1,0 +1,216 @@
+/**
+ * Embedding Generation Module using Cohere Models
+ *
+ * This module handles generating text embeddings using Cohere's embedding models
+ * for semantic search and RAG applications.
+ */
+
+const Cohere = require('cohere-ai');
+
+class EmbeddingGenerator {
+  constructor() {
+    this.cohere = null;
+    this.model = 'embed-english-v3.0'; // Default Cohere embedding model
+    this.batchSize = 96; // Cohere's maximum batch size
+    this.rateLimit = 1000; // 1 second between batches to avoid rate limiting
+  }
+
+  /**
+   * Initialize Cohere client with API key
+   * @param {string} apiKey - Cohere API key
+   */
+  initialize(apiKey) {
+    if (!apiKey) {
+      throw new Error('Cohere API key is required');
+    }
+
+    this.cohere = new Cohere.Client({ token: apiKey });
+    console.log('Cohere client initialized successfully');
+  }
+
+  /**
+   * Set embedding model
+   * @param {string} modelName - Cohere embedding model name
+   */
+  setModel(modelName) {
+    this.model = modelName;
+  }
+
+  /**
+   * Generate embeddings for a single text
+   * @param {string} text - Text to embed
+   * @returns {Promise<Array<number>>} Embedding vector
+   */
+  async generateEmbedding(text) {
+    if (!this.cohere) {
+      throw new Error('Cohere client not initialized. Call initialize() first.');
+    }
+
+    if (!text || text.trim().length === 0) {
+      throw new Error('Empty text cannot be embedded');
+    }
+
+    try {
+      const response = await this.cohere.embed({
+        texts: [text.trim()],
+        model: this.model,
+        inputType: 'search_document'
+      });
+
+      return response.body.embeddings[0];
+    } catch (error) {
+      console.error('Failed to generate embedding:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate embeddings for multiple texts (batched)
+   * @param {Array<string>} texts - Array of texts to embed
+   * @returns {Promise<Array<Array<number>>>} Array of embedding vectors
+   */
+  async generateEmbeddings(texts) {
+    if (!this.cohere) {
+      throw new Error('Cohere client not initialized. Call initialize() first.');
+    }
+
+    if (!texts || texts.length === 0) {
+      return [];
+    }
+
+    // Filter out empty texts
+    const validTexts = texts.filter(text => text && text.trim().length > 0);
+    const allEmbeddings = [];
+
+    // Process in batches to respect API limits
+    for (let i = 0; i < validTexts.length; i += this.batchSize) {
+      const batch = validTexts.slice(i, i + this.batchSize);
+
+      try {
+        const response = await this.cohere.embed({
+          texts: batch,
+          model: this.model,
+          inputType: 'search_document'
+        });
+
+        allEmbeddings.push(...response.body.embeddings);
+
+        // Rate limiting delay (except for last batch)
+        if (i + this.batchSize < validTexts.length) {
+          await new Promise(resolve => setTimeout(resolve, this.rateLimit));
+        }
+
+      } catch (error) {
+        console.error(`Failed to generate embeddings for batch ${i}-${i + this.batchSize}:`, error.message);
+        // Continue with next batch even if one fails
+        continue;
+      }
+    }
+
+    return allEmbeddings;
+  }
+
+  /**
+   * Generate embeddings for chunks with metadata
+   * @param {Array<Object>} chunks - Array of chunk objects
+   * @returns {Promise<Array<Object>>} Array of chunks with embeddings
+   */
+  async generateChunkEmbeddings(chunks) {
+    const texts = chunks.map(chunk => chunk.text);
+    const embeddings = await this.generateEmbeddings(texts);
+
+    return chunks.map((chunk, index) => ({
+      ...chunk,
+      embedding: embeddings[index] || null
+    }));
+  }
+
+  /**
+   * Validate embedding vector
+   * @param {Array<number>} embedding - Embedding vector to validate
+   * @returns {boolean} True if valid
+   */
+  validateEmbedding(embedding) {
+    if (!Array.isArray(embedding)) return false;
+    if (embedding.length === 0) return false;
+    if (embedding.some(val => typeof val !== 'number' || isNaN(val))) return false;
+    return true;
+  }
+
+  /**
+   * Get embedding dimension for current model
+   * @returns {number} Embedding dimension
+   */
+  getEmbeddingDimension() {
+    // Known dimensions for Cohere models
+    const modelDimensions = {
+      'embed-english-v3.0': 1024,
+      'embed-english-v2.0': 4096,
+      'embed-multilingual-v3.0': 1024,
+      'embed-multilingual-v2.0': 768
+    };
+
+    return modelDimensions[this.model] || 1024; // Default to 1024
+  }
+
+  /**
+   * Calculate cosine similarity between two embeddings
+   * @param {Array<number>} embedding1 - First embedding
+   * @param {Array<number>} embedding2 - Second embedding
+   * @returns {number} Cosine similarity score (-1 to 1)
+   */
+  cosineSimilarity(embedding1, embedding2) {
+    if (!this.validateEmbedding(embedding1) || !this.validateEmbedding(embedding2)) {
+      throw new Error('Invalid embedding vectors');
+    }
+
+    if (embedding1.length !== embedding2.length) {
+      throw new Error('Embedding vectors must have the same dimension');
+    }
+
+    let dotProduct = 0;
+    let magnitude1 = 0;
+    let magnitude2 = 0;
+
+    for (let i = 0; i < embedding1.length; i++) {
+      dotProduct += embedding1[i] * embedding2[i];
+      magnitude1 += embedding1[i] * embedding1[i];
+      magnitude2 += embedding2[i] * embedding2[i];
+    }
+
+    magnitude1 = Math.sqrt(magnitude1);
+    magnitude2 = Math.sqrt(magnitude2);
+
+    if (magnitude1 === 0 || magnitude2 === 0) {
+      return 0;
+    }
+
+    return dotProduct / (magnitude1 * magnitude2);
+  }
+
+  /**
+   * Generate query embedding (different input type for better results)
+   * @param {string} query - Query text
+   * @returns {Promise<Array<number>>} Query embedding vector
+   */
+  async generateQueryEmbedding(query) {
+    if (!this.cohere) {
+      throw new Error('Cohere client not initialized. Call initialize() first.');
+    }
+
+    try {
+      const response = await this.cohere.embed({
+        texts: [query.trim()],
+        model: this.model,
+        inputType: 'search_query'
+      });
+
+      return response.body.embeddings[0];
+    } catch (error) {
+      console.error('Failed to generate query embedding:', error.message);
+      throw error;
+    }
+  }
+}
+
+module.exports = EmbeddingGenerator;

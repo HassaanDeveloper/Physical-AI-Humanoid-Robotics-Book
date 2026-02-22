@@ -1,70 +1,30 @@
----
-phr_id: "VLA-TASKS-001"
-title: "Tasks Module 4 VLA"
-stage: "tasks"
-feature: "vla"
-created: "2026-01-14"
-updated: "2026-01-14"
-status: "completed"
----
+# Tasks: FastAPI Backend and Frontend Integration
 
-## PROMPT_TEXT
+This document breaks down the work into concrete tasks based on the approved plan.
 
-```text
-$ARGUMENTS
-```
+## Task 1: Backend API Setup
+- **1.1:** Create a new file named `api.py` in the project root directory.
+- **1.2:** Add `fastapi`, `uvicorn[standard]`, and `python-dotenv` to the `dependencies` section of the main `pyproject.toml`.
+- **1.3:** In `api.py`, initialize a basic FastAPI application.
+- **1.4:** Configure CORS middleware in `api.py` to allow all origins, headers, and methods for local development.
 
-## RESPONSE_TEXT
+## Task 2: Agent Integration
+- **2.1:** In `api.py`, import the `agent_executor` from `agent.py`.
+- **2.2:** Define Pydantic models for the chat request (`query: str`) and response (`response: str`).
+- **2.3:** Implement a `/chat` endpoint using the `@app.post("/chat")` decorator that accepts the request model.
+- **2.4:** Inside the endpoint, invoke the `agent_executor` with the user's query and return the agent's output in the response model.
 
-```text
-✅ Successfully generated comprehensive task list for Module 4 - Vision-Language-Action (VLA)
+## Task 3: Frontend Chatbot UI Component
+- **3.1:** Create a new directory `book_frontend/src/components/Chatbot`.
+- **3.2:** Inside the new directory, create `index.js` and `styles.css` for the Chatbot component.
+- **3.3:** In `index.js`, build a React component with a state to manage messages, an input field, a send button, and a message display area.
 
-**Tasks File**: specs/004-vla/tasks.md
-**Total Tasks**: 103 tasks organized by user stories
-**Phases**: 7 implementation phases with clear dependencies
-**Parallel Opportunities**: 27 tasks identified for concurrent execution
+## Task 4: Docusaurus Integration
+- **4.1:** Use the Docusaurus "swizzle" command to get control over the root `Layout` component.
+- **4.2:** Modify the swizzled `Layout` component to render the new `Chatbot` component, ensuring it appears on all pages of the site.
+- **4.3:** In the `Chatbot` component, implement the `fetch` API call to the `http://127.0.0.1:8000/chat` endpoint when the send button is clicked.
+- **4.4:** Update the chat's message state with the response from the backend.
 
-**Key Features**:
-- 8 Setup tasks for Docusaurus structure
-- 8 Foundational tasks for core infrastructure
-- 13 tasks for User Story 1 (Foundations - P1)
-- 15 tasks for User Story 2 (Voice-to-Action - P2)
-- 15 tasks for User Story 3 (LLM Planning - P3)
-- 16 tasks for User Story 4 (Capstone - P4)
-- 31 Polish tasks for final quality assurance
-
-**Implementation Strategy**:
-- MVP: User Story 1 (Foundations) - Week 1-2
-- Parallel execution: User Stories 2 & 3 - Week 3-4
-- Integration: User Story 4 - Week 5
-- Polish & Deployment: Week 6
-
-**Constitution Compliance**: ✅ All principles satisfied
-```
-
-## CONTEXT
-
-- **Feature Spec**: specs/4-vla/spec.md
-- **Implementation Plan**: specs/004-vla/plan.md
-- **Research**: specs/004-vla/research.md
-- **Data Model**: specs/004-vla/data-model.md
-- **Contracts**: specs/004-vla/contracts/
-- **User Intent**: Generate executable tasks for Docusaurus content creation
-
-## METADATA
-
-- **Command**: /sp.tasks
-- **Input**: Empty (used existing design documents)
-- **Output**: Complete task list with 103 executable tasks
-- **Organization**: Tasks grouped by user stories for independent implementation
-- **Format**: Strict checklist format with IDs, parallel markers, and story labels
-
-## NOTES
-
-- All tasks follow required format: `- [ ] TXXX [P?] [US?] Description with file path`
-- Tasks are organized by user story priority (P1-P4)
-- Dependency graph shows clear execution order
-- Parallel execution examples provided for team coordination
-- MVP scope clearly defined (User Story 1)
-- Comprehensive validation and testing tasks included
-- Ready for immediate execution by development teams
+## Task 5: Documentation and Verification
+- **5.1:** Create a `start_dev.bat` script to concurrently run the FastAPI backend server and the Docusaurus frontend development server.
+- **5.2:** Add a section to the main `README.md` explaining how to use the new script to run the integrated application and test the chat functionality.

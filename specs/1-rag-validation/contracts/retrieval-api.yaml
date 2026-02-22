@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: RAG Pipeline Validation API
+  description: API for validating RAG retrieval pipeline functionality
+  version: 1.0.0
+paths:
+  /validate:
+    post:
+      summary: Validate the RAG retrieval pipeline
+      description: Runs a comprehensive validation of the retrieval pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                queries:
+                  type: array
+                  items:
+                    type: string
+                  description: List of queries to test the retrieval pipeline
+                limit:
+                  type: integer
+                  default: 5
+                  description: Number of results to return for each query
+      responses:
+        '200':
+          description: Validation results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_queries_tested:
+                    type: integer
+                  content_validation_pass_rate:
+                    type: number
+                  metadata_validation_pass_rate:
+                    type: number
+                  pipeline_status:
+                    type: string
+                  individual_results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        query:
+                          type: string
+                        content_validation:
+                          type: object
+                          properties:
+                            jaccard_similarity:
+                              type: number
+                            source_coverage:
+                              type: number
+                            validation_passed:
+                              type: boolean
+                        metadata_validation:
+                          type: object
+                          properties:
+                            missing_fields:
+                              type: array
+                              items:
+                                type: string
+                            metadata_valid:
+                              type: boolean
+  /search:
+    post:
+      summary: Search for content in the RAG system
+      description: Performs a vector similarity search against stored embeddings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Query text to search for
+                limit:
+                  type: integer
+                  default: 5
+                  description: Number of results to return
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    score:
+                      type: number
+                    content:
+                      type: string
+                    metadata:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                        title:
+                          type: string
+                        chunk_index:
+                          type: integer
