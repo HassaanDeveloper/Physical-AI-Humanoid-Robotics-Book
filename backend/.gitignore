@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Dependencies
+*.egg-info/
+.dist-info/
+*.egg
+MANIFEST
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Build artifacts
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data
+*.sqlite3
+*.db
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+htmlcov/
+
+# Test
+pytest_cache/
+.tox/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
