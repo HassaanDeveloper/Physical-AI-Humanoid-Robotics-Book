@@ -14,3 +14,6 @@ dependencies = [
 members = [
     "backend",
 ]
+
+[tool.setuptools.packages]
+find = { include = ["backend"] }
