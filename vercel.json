@@ -2,9 +2,19 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/main.py" }
   ],
-  "functions": {
-    "main.py": {
-      "runtime": "vercel-python@3.9"
+  "builds": [
+    {
+      "src": "main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "book_frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "book_frontend/build"
+      }
     }
-  }
+  ],
+  "installCommand": "pip install -r requirements.txt && npm --prefix book_frontend install",
+  "buildCommand": "npm --prefix book_frontend run build"
 }
