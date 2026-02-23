@@ -1,6 +1,11 @@
 import os
+import sys
 import logging
 from typing import Dict, Any, List
+
+# Add the current directory to sys.path to resolve local imports (e.g., agent.py)
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
