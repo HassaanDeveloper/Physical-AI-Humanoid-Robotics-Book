@@ -42,7 +42,7 @@ const config = {
   },
 
   customFields: {
-    API_ENDPOINT: process.env.API_ENDPOINT || '',
+    API_ENDPOINT: process.env.API_ENDPOINT || '/api',
   },
 
   presets: [
