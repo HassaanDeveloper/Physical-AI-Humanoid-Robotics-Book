@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "backend/api.py" },
+    { "source": "/health", "destination": "backend/api.py" },
+    { "source": "/chat", "destination": "backend/api.py" }
+  ],
+  "functions": {
+    "backend/api.py": {
+      "runtime": "vercel-python@0.1.0"
+    }
+  }
+}
