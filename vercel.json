@@ -1,10 +1,8 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "main.py" }
-  ],
-  "functions": {
-    "main.py": {
-      "runtime": "vercel-python"
-    }
-  }
+    { "source": "/api/(.*)", "destination": "/api/index.py" },
+    { "source": "/health", "destination": "/api/index.py" },
+    { "source": "/chat", "destination": "/api/index.py" },
+    { "source": "/", "destination": "/api/index.py" }
+  ]
 }
