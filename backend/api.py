@@ -44,8 +44,7 @@ class HealthResponse(BaseModel):
 app = FastAPI(
     title="RAG Agent API",
     description="FastAPI server for RAG agent integration",
-    version="1.0.0",
-    root_path="/api" # Explicitly set root path for deployment on platforms like Railway
+    version="1.0.0"
 )
 
 @app.get("/")
