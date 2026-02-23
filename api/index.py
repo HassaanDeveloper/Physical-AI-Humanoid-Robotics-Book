@@ -1,16 +1,25 @@
+from fastapi import FastAPI
+from starlette.responses import JSONResponse
 import os
 import sys
 
-# Add the project root to sys.path so we can import from backend/
+# Ensure backend can be imported if needed later
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Import the FastAPI app from backend/api.py
-try:
-    from backend.api import app
-except ImportError:
-    # Fallback if the pathing is slightly different on Vercel
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
-    from api import app
+app = FastAPI()
 
-# This is the entrypoint for Vercel
-# The 'app' object MUST be at the top level of the file
+@app.get("/")
+async def read_root():
+    return JSONResponse({"message": "Hello from Vercel FastAPI (Diagnostic)"})
+
+@app.get("/test")
+async def read_test():
+    return JSONResponse({"message": "Test endpoint"})
+
+@app.post("/chat") # Keep chat for testing later
+async def chat_test():
+    return JSONResponse({"message": "Chat endpoint (Diagnostic)"})
+
+@app.get("/health") # Keep health for testing later
+async def health_test():
+    return JSONResponse({"message": "Health endpoint (Diagnostic)"})
