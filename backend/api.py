@@ -47,6 +47,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.get("/")
+async def root_endpoint():
+    """Diagnostic root endpoint"""
+    return {
+        "status": "online",
+        "message": "RAG Agent API is running",
+        "version": "1.0.0"
+    }
+
 # Add CORS middleware to allow frontend communication
 app.add_middleware(
     CORSMiddleware,
