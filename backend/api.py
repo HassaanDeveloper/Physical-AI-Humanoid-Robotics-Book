@@ -78,6 +78,22 @@ async def health_check():
     )
 
 
+@app.get("/models")
+async def get_models():
+    """Returns information about the AI model being used"""
+    global agent
+    if agent is None:
+        try:
+            agent = GeminiBookAgent()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Agent initialization failed: {str(e)}")
+    
+    return {
+        "model_name": agent.model_name,
+        "status": "active"
+    }
+
+
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
     """
@@ -122,6 +138,27 @@ async def chat_endpoint(request: ChatRequest):
     except Exception as e:
         logger.error(f"Error processing chat request: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
+
+
+@app.post("/query_raw")
+async def query_raw_endpoint(request: ChatRequest):
+    """
+    Raw query endpoint for debugging.
+    Returns the full agent result without response model validation.
+    """
+    global agent
+    if agent is None:
+        try:
+            agent = GeminiBookAgent()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Agent initialization failed: {str(e)}")
+
+    try:
+        result = agent.ask(request.query, max_chunks=request.max_chunks)
+        return result
+    except Exception as e:
+        logger.error(f"Error in raw query: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

@@ -155,8 +155,8 @@ class GeminiBookAgent:
         if not self.gemini_api_key:
             raise ValueError("GEMINI_API_KEY environment variable is required")
 
-        self.client = genai.Client()
-        self.model_name = 'gemini-pro' # Hardcode for now
+        self.client = genai.Client(api_key=self.gemini_api_key)
+        self.model_name = 'gemini-1.5-flash' # Using 1.5 flash for better performance/latency
         
         logger.info(f"Initialized with model: {self.model_name}")
         self.retrieval_tool = QdrantRetrievalTool()
