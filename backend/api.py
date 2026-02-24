@@ -69,7 +69,7 @@ app.add_middleware(
 agent = None
 
 
-@app.get("/api/health", response_model=HealthResponse)
+@app.get("/health", response_model=HealthResponse)
 async def health_check():
     """Health check endpoint"""
     return HealthResponse(
@@ -78,7 +78,7 @@ async def health_check():
     )
 
 
-@app.post("/api/chat", response_model=ChatResponse)
+@app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
     """
     Chat endpoint that processes queries using the RAG agent.

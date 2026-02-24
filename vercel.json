@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/main.py" }
-  ],
   "builds": [
     {
       "src": "main.py",
@@ -14,7 +11,5 @@
         "distDir": "book_frontend/build"
       }
     }
-  ],
-  "installCommand": "pip install -r requirements.txt && npm --prefix book_frontend install",
-  "buildCommand": "npm --prefix book_frontend run build"
+  ]
 }
