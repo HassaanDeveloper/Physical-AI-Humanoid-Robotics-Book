@@ -52,7 +52,8 @@ class QdrantRetrievalTool:
                 api_key=self.qdrant_api_key
             )
         else:
-            self.qdrant_client = QdrantClient(host="localhost", port=6333)
+            # If no API key, still use the provided URL (e.g. for local or unauthenticated remote)
+            self.qdrant_client = QdrantClient(url=self.qdrant_url)
 
         # Initialize Cohere client for query embeddings (required for Qdrant compatibility)
         # The Qdrant collection was created with Cohere embeddings, so we must use Cohere for query embeddings

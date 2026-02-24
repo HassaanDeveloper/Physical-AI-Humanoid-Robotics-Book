@@ -42,7 +42,7 @@ const config = {
   },
 
   customFields: {
-    API_ENDPOINT: process.env.API_ENDPOINT || 'http://localhost:8000',
+    API_ENDPOINT: process.env.API_ENDPOINT || 'https://physical-ai-humanoid-robotics-book-two-topaz.vercel.app/api',
   },
 
   presets: [
