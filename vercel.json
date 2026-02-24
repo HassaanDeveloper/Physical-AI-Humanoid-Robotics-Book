@@ -1,18 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/main.py" }
-  ],
-  "builds": [
-    {
-      "src": "main.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "book_frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "book_frontend/build"
-      }
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.11"
     }
-  ]
+  }
 }
